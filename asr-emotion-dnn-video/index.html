@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #07111f; }
+      body { font-family: "Microsoft YaHei", "Noto Sans SC", sans-serif; color: #eef6ff; }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 15% 20%, rgba(56,213,255,.16), transparent 24%),
+          radial-gradient(circle at 82% 72%, rgba(255,191,95,.14), transparent 25%),
+          linear-gradient(135deg, #07111f, #0b1c30 62%, #07111f);
+      }
+      .grid {
+        position: absolute; inset: 0;
+        background-image: linear-gradient(rgba(238,246,255,.05) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(238,246,255,.05) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        padding: 96px 128px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 32px;
+      }
+      .kicker { color: #38d5ff; font-size: 34px; letter-spacing: 0; font-weight: 700; }
+      .title { max-width: 1240px; font-size: 82px; line-height: 1.12; font-weight: 800; }
+      .subtitle { max-width: 1240px; color: #b9cce2; font-size: 34px; line-height: 1.45; }
+      .card-row { display: flex; gap: 28px; align-items: stretch; }
+      .card {
+        background: rgba(16,36,58,.88);
+        border: 1px solid rgba(56,213,255,.22);
+        border-radius: 18px;
+        padding: 28px 32px;
+        box-shadow: 0 24px 80px rgba(0,0,0,.28);
+      }
+      .card h3 { font-size: 32px; color: #38d5ff; margin-bottom: 14px; }
+      .card p, .card li { font-size: 28px; line-height: 1.42; color: #d9e8f7; }
+      .card ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+      .wide { width: 820px; }
+      .medium { width: 540px; }
+      .mono { font-family: "JetBrains Mono", Consolas, monospace; }
+      .pipeline { display: flex; align-items: center; gap: 18px; margin-top: 12px; }
+      .node {
+        min-width: 230px;
+        text-align: center;
+        padding: 26px 22px;
+        border-radius: 18px;
+        background: rgba(16,36,58,.92);
+        border: 1px solid rgba(101,230,164,.26);
+        font-size: 30px;
+        font-weight: 800;
+      }
+      .arrow { color: #ffbf5f; font-size: 48px; font-weight: 900; }
+      .code {
+        width: 850px;
+        background: rgba(5,12,22,.92);
+        border: 1px solid rgba(238,246,255,.16);
+        border-radius: 16px;
+        padding: 26px 30px;
+        font-size: 26px;
+        line-height: 1.42;
+        white-space: pre-wrap;
+      }
+      .network {
+        width: 720px;
+        height: 380px;
+        position: relative;
+        margin-left: 48px;
+      }
+      .connectors {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .connectors line {
+        stroke: rgba(238,246,255,.2);
+        stroke-width: 2;
+      }
+      .layer { position: absolute; display: flex; flex-direction: column; gap: 22px; }
+      .l1 { left: 0; top: 70px; }
+      .l2 { left: 260px; top: 28px; }
+      .l3 { left: 560px; top: 92px; }
+      .neuron {
+        width: 34px; height: 34px;
+        border-radius: 50%;
+        background: #38d5ff;
+        box-shadow: 0 0 24px rgba(56,213,255,.55);
+      }
+      .neuron.amber { background: #ffbf5f; box-shadow: 0 0 24px rgba(255,191,95,.45); }
+      .caption {
+        position: absolute;
+        left: 128px;
+        right: 128px;
+        bottom: 62px;
+        background: rgba(5,12,22,.76);
+        border-left: 6px solid #38d5ff;
+        border-radius: 12px;
+        padding: 18px 26px;
+        color: #eef6ff;
+        font-size: 29px;
+        line-height: 1.35;
+      }
+      audio { display: none; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="116" data-width="1920" data-height="1080">
+      <div class="grid"></div>
+      <audio id="narration" data-start="0" data-track-index="9" src="assets/narration.wav" data-volume="1"></audio>
+
+      <section id="s1" class="scene clip" data-start="0" data-duration="14" data-track-index="1">
+        <div class="kicker">语音识别 · 情绪识别教学案例</div>
+        <div class="title">用 DNN 网络识别语音情绪</div>
+        <div class="subtitle">从 RAVDESS 风格音频文件出发，理解“音频 → MFCC → DNN → 情绪类别”的完整建模流程。</div>
+        <div class="caption">本节重点不是背代码，而是解释每一步为什么这样做。</div>
+      </section>
+
+      <section id="s2" class="scene clip" data-start="14" data-duration="16" data-track-index="2">
+        <div class="kicker">数据集：scripts/8/dataset</div>
+        <div class="card-row">
+          <div class="card medium">
+            <h3>结构</h3>
+            <ul>
+              <li>24 位演员：Actor_01 到 Actor_24</li>
+              <li>约 1440 条 wav 音频</li>
+              <li>文件名中携带标签编码</li>
+            </ul>
+          </div>
+          <div class="card wide">
+            <h3>情绪标签</h3>
+            <p class="mono">01 neutral · 02 calm · 03 happy · 04 sad<br>05 angry · 06 fear · 07 disgust · 08 surprise</p>
+          </div>
+        </div>
+        <div class="caption">课堂提问：为什么标签可以从文件名第三段解析出来？这种做法有什么风险？</div>
+      </section>
+
+      <section id="s3" class="scene clip" data-start="30" data-duration="16" data-track-index="3">
+        <div class="kicker">Step 1：特征提取</div>
+        <div class="pipeline">
+          <div class="node">wav 波形</div><div class="arrow">→</div>
+          <div class="node">MFCC</div><div class="arrow">→</div>
+          <div class="node">40 维向量</div>
+        </div>
+        <div class="card wide">
+          <h3>为什么不直接输入整段音频？</h3>
+          <p>语音是时间序列，长度不一。MFCC 把频谱形态压缩成定长表示，让 DNN 可以接收统一维度的输入。</p>
+        </div>
+        <div class="caption">关键点：本案例中每条音频被表示为 40 维 MFCC 均值特征。</div>
+      </section>
+
+      <section id="s4" class="scene clip" data-start="46" data-duration="18" data-track-index="4">
+        <div class="kicker">Step 2：DNN 网络结构</div>
+        <div class="card-row">
+          <pre class="code">class DNN(nn.Module):
+    def __init__(self):
+        self.hidden = nn.Linear(40, 128)
+        self.relu = nn.ReLU()
+        self.output = nn.Linear(128, 8)</pre>
+          <div class="network">
+            <svg class="connectors" viewBox="0 0 720 380" aria-hidden="true">
+              <line x1="34" y1="87" x2="294" y2="45" />
+              <line x1="34" y1="87" x2="294" y2="101" />
+              <line x1="34" y1="143" x2="294" y2="157" />
+              <line x1="34" y1="199" x2="294" y2="213" />
+              <line x1="34" y1="199" x2="294" y2="269" />
+              <line x1="294" y1="45" x2="594" y2="109" />
+              <line x1="294" y1="101" x2="594" y2="165" />
+              <line x1="294" y1="157" x2="594" y2="221" />
+              <line x1="294" y1="213" x2="594" y2="109" />
+              <line x1="294" y1="269" x2="594" y2="221" />
+            </svg>
+            <div class="layer l1"><div class="neuron"></div><div class="neuron"></div><div class="neuron"></div></div>
+            <div class="layer l2"><div class="neuron amber"></div><div class="neuron amber"></div><div class="neuron amber"></div><div class="neuron amber"></div></div>
+            <div class="layer l3"><div class="neuron"></div><div class="neuron"></div><div class="neuron"></div></div>
+          </div>
+        </div>
+        <div class="caption">输入层 40 对应 MFCC 特征维度；输出层 8 对应八种情绪类别。</div>
+      </section>
+
+      <section id="s5" class="scene clip" data-start="64" data-duration="18" data-track-index="5">
+        <div class="kicker">Step 3：训练逻辑</div>
+        <div class="pipeline">
+          <div class="node">logits</div><div class="arrow">→</div>
+          <div class="node">CrossEntropyLoss</div><div class="arrow">→</div>
+          <div class="node">反向传播</div><div class="arrow">→</div>
+          <div class="node">参数更新</div>
+        </div>
+        <div class="card wide">
+          <h3>课堂要点</h3>
+          <p>CrossEntropyLoss 直接接收 logits 和整数标签。每轮训练都要执行 zero_grad、backward、step。</p>
+        </div>
+        <div class="caption">提问：为什么这里不需要先手动 softmax？</div>
+      </section>
+
+      <section id="s6" class="scene clip" data-start="82" data-duration="16" data-track-index="6">
+        <div class="kicker">Step 4：评价与教学提醒</div>
+        <div class="card-row">
+          <div class="card medium">
+            <h3>现有脚本的课堂问题</h3>
+            <ul>
+              <li>直接在全量训练集上算 accuracy</li>
+              <li>缺少 train/test 划分</li>
+              <li>没有混淆矩阵与错误分析</li>
+            </ul>
+          </div>
+          <div class="card medium">
+            <h3>建议改进</h3>
+            <ul>
+              <li>按演员或样本划分验证集</li>
+              <li>观察哪些情绪最容易混淆</li>
+              <li>让学生解释模型边界</li>
+            </ul>
+          </div>
+        </div>
+        <div class="caption">教学目标：让学生从“跑通代码”走向“解释模型”。</div>
+      </section>
+
+      <section id="s7" class="scene clip" data-start="98" data-duration="18" data-track-index="7">
+        <div class="kicker">课堂 Checkpoint</div>
+        <div class="card-row">
+          <div class="card medium"><h3>问题 1</h3><p>为什么用 MFCC 表示语音？</p></div>
+          <div class="card medium"><h3>问题 2</h3><p>为什么 DNN 输出层是 8 个单元？</p></div>
+          <div class="card medium"><h3>问题 3</h3><p>为什么不能只看训练集准确率？</p></div>
+        </div>
+        <div class="subtitle">学生能回答这些问题，才说明真正理解了 DNN 情绪识别的建模流程。</div>
+        <div class="caption">下一节课可以继续升级：加入测试集、混淆矩阵、CNN 或 Transformer 模型。</div>
+      </section>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = {
+        duration: () => 116,
+        totalDuration: () => 116,
+        seek: () => {},
+        pause: () => {},
+        play: () => {}
+      };
+    </script>
+  </body>
+</html>

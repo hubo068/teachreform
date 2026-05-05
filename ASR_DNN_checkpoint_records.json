@@ -1,0 +1,81 @@
+{
+  "student_name": "王强",
+  "student_id": "20230612",
+  "task": "DNN 用于语音识别",
+  "accuracy": 0.9833333333333333,
+  "created_at": "2026-04-26T23:16:16",
+  "checkpoint_records": [
+    {
+      "step": "Step 1",
+      "title": "DNN 声学模型的输入",
+      "question": "为什么本节任务可以理解为“声学特征到类别”的映射，而不是直接让 DNN 处理整段原始 wav？",
+      "thinking_hint": "从语音的短时变化、分帧和特征表示角度思考。",
+      "answer": "特征向量描述了声道特点，可以捕捉声音类别",
+      "confidence": "高",
+      "timestamp": "2026-04-26T23:11:31"
+    },
+    {
+      "step": "Step 2",
+      "title": "特征维度与类别数",
+      "question": "刚才打印出“特征维度=2、类别=4”。这两个数字分别会影响 DNN 的哪一部分设计？",
+      "thinking_hint": "一个数字对应输入样本的表示，另一个数字对应模型要区分的候选结果。",
+      "answer": "输入层和输出层",
+      "confidence": "高",
+      "timestamp": "2026-04-26T23:12:07"
+    },
+    {
+      "step": "Step 3",
+      "title": "训练集、测试集与泛化",
+      "question": "为什么要留出测试集，并且只在训练集上 fit 标准化器？",
+      "thinking_hint": "从“新语音上的表现”和“测试集信息泄漏”两个角度思考。",
+      "answer": "为了模型的泛化性",
+      "confidence": "高",
+      "timestamp": "2026-04-26T23:12:34"
+    },
+    {
+      "step": "Step 4",
+      "title": "DNN 输出层设计",
+      "question": "最后一层设成 4 个输出单元，它和本节识别任务之间有什么关系？",
+      "thinking_hint": "看一看 labels 里有几个候选数字。",
+      "answer": "本节要进行4分类",
+      "confidence": "高",
+      "timestamp": "2026-04-26T23:13:00"
+    },
+    {
+      "step": "Step 5A",
+      "title": "CrossEntropyLoss 与 logits",
+      "question": "使用 CrossEntropyLoss 时，为什么模型最后一层可以直接输出 logits，而不是先手动转成概率？",
+      "thinking_hint": "从 PyTorch 这个损失函数内部已经做了什么来思考。",
+      "answer": "因为logits出来的就是分类的占比",
+      "confidence": "高",
+      "timestamp": "2026-04-26T23:14:10"
+    },
+    {
+      "step": "Step 5B",
+      "title": "梯度清零与参数更新",
+      "question": "每个 batch 都执行 zero_grad、backward、step。请说明这三个操作在训练循环中的作用。",
+      "thinking_hint": "分别从清理旧梯度、计算当前梯度、更新参数三个动作解释。",
+      "answer": "梯度清理，反向传播，权重更新",
+      "confidence": "高",
+      "timestamp": "2026-04-26T23:15:11"
+    },
+    {
+      "step": "Step 6",
+      "title": "评估模式与解码",
+      "question": "评估时为什么使用 model.eval() 和 torch.no_grad()？argmax 在这里扮演什么角色？",
+      "thinking_hint": "一个问题和评估阶段的模型行为有关，另一个问题和从分数得到类别有关。",
+      "answer": "模型评估模型，不在计算梯度，分类",
+      "confidence": "高",
+      "timestamp": "2026-04-26T23:15:41"
+    },
+    {
+      "step": "Step 7",
+      "title": "从分类评价到 ASR 序列评价",
+      "question": "如果从本例的数字分类扩展到完整句子识别，为什么只看普通 accuracy 可能不够？",
+      "thinking_hint": "完整 ASR 输出的是变长文字序列，错误可能是替换、插入或删除。",
+      "answer": "还要看错误率等等指标",
+      "confidence": "高",
+      "timestamp": "2026-04-26T23:16:06"
+    }
+  ]
+}
